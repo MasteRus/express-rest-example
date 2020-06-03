@@ -162,18 +162,6 @@ exports.book_create_post = [
     }
 ];
 
-// Display book delete form on GET.
-// exports.book_delete_get = function(req, res) {
-//     Book.findById(req.params.id)
-//         .exec(function (err, book) {
-//             if (err) {
-//                 return next(err);
-//             }
-//             //Successful, so render
-//             res.render('book_delete', {title: 'Book delete', book: book});
-//         });
-// };
-
 exports.book_delete_get = function(req, res) {
     async.parallel({
         book: function(callback) {
@@ -204,14 +192,10 @@ exports.book_delete_post = function(req, res) {
         if (err) { return next(err); }
         // Success
         if (results.bookinstances.length > 0) {
-            console.log('MOREINN');
-            console.log(results);
-            console.log('MOREINN');
             res.render('book_delete', {title: 'Book delete', book: results.book, bookinstances: results.bookinstances});
             return;
         }
         else {
-            console.log('remove');
             // Author has no books. Delete object and redirect to the list of authors.
             Book.findByIdAndRemove(req.body.bookid, function deleteBook(err) {
                 if (err) { return next(err); }
